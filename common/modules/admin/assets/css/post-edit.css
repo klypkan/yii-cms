@@ -1,0 +1,30 @@
+.post-category-panel {
+    margin-top: 25px;
+}
+
+.post-tag-list {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.post-tag-list li {
+    float: left;
+    padding: 0px 10px 10px 0px;
+}
+
+.post-tag-remove {
+    cursor: pointer;
+}
+
+.post-tag-remove {
+    cursor: pointer;
+}
+
+.post-tag-remove:hover,
+.post-tag-remove:focus,
+.post-tag-remove.focus,
+.post-tag-remove:active,
+.post-tag-remove.active {
+    color: #286090;
+}

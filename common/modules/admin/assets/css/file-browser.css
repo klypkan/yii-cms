@@ -1,0 +1,44 @@
+﻿.wrapper {
+    padding: 9px 15px;
+}
+
+.btn-toolbar {
+    margin: 0px 0px 20px 0px;
+    border-bottom: solid 1px #ddd;
+}
+
+.breadcrumb {
+    padding: 8px 5px;
+}
+
+.file-items {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.file-item {
+    height: 120px;
+    display: inline-block;
+    margin: 0px 10px 10px 0px;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.file {
+    padding: 10px;
+}
+
+    .file:hover {
+        background-color: #eee;
+    }
+
+.file-item img {
+    max-height: 100px;
+    opacity: 0.8;
+}
+
+    .file-item img:hover {
+        opacity: 1;
+    }

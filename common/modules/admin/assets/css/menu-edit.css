@@ -1,0 +1,88 @@
+.menu-item-entity-list, #menu-item-list {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#menu-item-list li {
+    margin-bottom: 10px;
+}
+
+.menu-item .btn-down, .menu-item .btn-up {
+    display: none;
+}
+
+.menu-item-state-hidden .btn-down {
+    display: inline-block;
+}
+
+.menu-item-state-hidden .btn-up {
+    display: none;
+}
+
+.menu-item-state-shown .btn-down {
+    display: none;
+}
+
+.menu-item-state-shown .btn-up {
+    display: inline-block;
+}
+
+.menu-item-header {
+    float: left;
+    width: 100%;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+}
+
+.menu-item-header-text {
+    padding: 6px 12px;
+}
+
+.menu-item-content {
+    float: left;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 12px;
+}
+
+.menu-item-move-form-group {
+    display: none;
+}
+
+.menu-item-can-move {
+    display: block;
+}
+
+.menu-item-remove-btn {
+    padding-left: 0px;
+}
+
+.menu-item-depth-0 {
+    margin-left: 0px;
+}
+
+.menu-item-depth-1 {
+    margin-left: 30px;
+}
+
+.menu-item-depth-2 {
+    margin-left: 60px;
+}
+
+.menu-item-depth-3 {
+    margin-left: 90px;
+}
+
+.menu-item-depth-4 {
+    margin-left: 120px;
+}
+
+.menu-item-depth-5 {
+    margin-left: 150px;
+}
+
+.tab-content {
+    padding: 10px 10px;
+}
