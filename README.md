@@ -36,7 +36,7 @@ If you are proficient in Yii 2.0, you can use Yii-CMS for your needs. If not, st
 
 # Configuring the RBAC permissions
 
-The RBAC permissions are in the file **/modules/admin/helpers/Permission.php**.<br />
+The RBAC permissions are in the file **common/modules/admin/rbac/Permission.php**.<br />
 Add a new permission as is shown below:
 ```php
 const MY_PERMISSION = 'My permission description';
