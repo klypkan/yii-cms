@@ -1,5 +1,4 @@
-﻿<?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
-    <?php
+<?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?><?php
     ini_set('max_execution_time', 300);
     ob_start();
     $commonConfigFile = __DIR__ . '/../../common/config/main.php';
@@ -671,7 +670,6 @@ function  formatDSN($typeOfDatabase, $dbName, $host)
     }
     throw new Exception("Unknown type of database.");
 }
-
 ?>
 
 
