@@ -1,5 +1,6 @@
 <?php
 return [
+    'DATE_TIME_FORMAT' => 'Y-m-d H:i:s',
     'Create' => 'Create',
     'Delete' => 'Delete',
     'Filter' => 'Filter',

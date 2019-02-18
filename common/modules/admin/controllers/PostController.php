@@ -2,17 +2,17 @@
 
 namespace common\modules\admin\controllers;
 
-use Yii;
-use yii\filters\AccessControl;
-use common\modules\admin\Module;
-use common\modules\admin\rbac\Permission;
-use common\modules\admin\helpers\ViewHelper;
-use common\modules\admin\helpers\PermalinkHelper;
+use common\models\Permalink;
 use common\models\Post;
 use common\models\PostMeta;
 use common\models\PostMetaRelationship;
+use common\modules\admin\helpers\PermalinkHelper;
+use common\modules\admin\helpers\ViewHelper;
 use common\modules\admin\models\PostForm;
-use common\models\Permalink;
+use common\modules\admin\Module;
+use common\modules\admin\rbac\Permission;
+use Yii;
+use yii\filters\AccessControl;
 
 
 class PostController extends \yii\web\Controller
@@ -51,10 +51,10 @@ class PostController extends \yii\web\Controller
             }
             if (empty($post)) {
                 $post = new Post();
-                $post->date = date('Y-m-d H:i:s');
             }
             $post->type = Post::TYPE_POST;
             $post->title = $model->title;
+            $post->date = $this->convertFormDateToDbDate($model->date);
             $post->content = $model->content;
             $post->status = $model->status;
             $post->site_id = $model->site_id;
@@ -200,6 +200,7 @@ class PostController extends \yii\web\Controller
                 $post = Post::findOne(['id' => $id, 'type' => Post::TYPE_POST]);
                 if (!empty($post)) {
                     $model->title = $post->title;
+                    $model->date = $this->convertDbDateToFormDate($post->date);
                     $model->content = $post->content;
                     $model->status = $post->status;
                     $model->site_id = $post->site_id;
@@ -237,6 +238,9 @@ class PostController extends \yii\web\Controller
                     }
                 }
             }
+            if (empty($model->date)) {
+                $model->date = $this->getNowDate();
+            }
             if (empty($model->site_id)) {
                 $model->status = Post::STATUS_ACTIVE;
                 $queryParams = $request->getQueryParams();
@@ -256,6 +260,40 @@ class PostController extends \yii\web\Controller
         foreach ($categories as &$categoryItem) {
             $model->categories[] = array("id" => $categoryItem->id, "name" => $categoryItem->name, "selected" => in_array($categoryItem->id, $selectedCategories));
         }
+    }
+
+    private function getNowDate()
+    {
+        $date = new \DateTime('now');
+        return $date->format($this->getDateTimeFormat());
+    }
+
+    private function convertFormDateToDbDate($formDate)
+    {
+        if(!empty($formDate)) {
+            $format = $this->getDateTimeFormat();
+            $date = \DateTime::createFromFormat($format, $formDate, new \DateTimeZone(Yii::$app->timeZone));
+            $date->setTimezone(new \DateTimeZone('UTC'));
+            return $date->format('Y-m-d H:i:s');
+        }
+        return '';
+    }
+
+    private function convertDbDateToFormDate($dbDate)
+    {
+        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $dbDate, new \DateTimeZone('UTC'));
+        $date->setTimezone(new \DateTimeZone(Yii::$app->timeZone));
+        $format = $this->getDateTimeFormat();
+        return $date->format($format);
+    }
+
+    private function getDateTimeFormat()
+    {
+        $format = Module::t('app', 'DATE_TIME_FORMAT');
+        if ($format == 'DATE_TIME_FORMAT') {
+            $format = 'Y-m-d H:i:s';
+        }
+        return $format;
     }
 
     public function actionDelete()

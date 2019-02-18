@@ -9,6 +9,7 @@ use common\modules\admin\Module;
 class PostForm extends Model
 {
     public $title;
+    public $date;
     public $permalink_name;
     public $permalink_route;
     public $content;
@@ -25,7 +26,7 @@ class PostForm extends Model
     public function rules()
     {
         return [
-            [['title', 'permalink_name', 'permalink_route', 'content', 'status', 'site_id'], 'required'],
+            [['title', 'date', 'permalink_name', 'permalink_route', 'content', 'status', 'site_id'], 'required'],
             [['categories','tags'], 'safe'],
             ['seo_title', 'string', 'length' => [0, 160]],
             ['seo_description', 'string', 'length' => [0, 300]],
@@ -39,6 +40,7 @@ class PostForm extends Model
     {
         return [
             'title' => Module::t('app', 'Title'),
+            'date' => Module::t('app', 'Date'),
             'permalink_name' => Module::t('app', 'Slug'),
             'content' => Module::t('app', 'Content'),
             'seo_title' => Module::t('app', 'Title'),

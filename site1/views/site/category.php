@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($postList as $postItem): ?>
         <div class="col-md-12">
             <h2><a href="<?=Url::to($postItem->url)?>"><?= $postItem->title ?></a></h2>
+            <p><?= $postItem->date ?></p>
         </div>
         <div class="col-md-12">
             <?= $postItem->content ?>

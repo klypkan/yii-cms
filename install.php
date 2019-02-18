@@ -3,6 +3,7 @@
     ob_start();
     $commonConfigFile = __DIR__ . '/common/config/main.php';
     $site1ConfigFile = __DIR__ . '/site1/config/main.php';
+    $site1BootstrapFile = __DIR__ . '/site1/config/bootstrap.php';
     $result = array("status" => "", "message" => "");
     if ($_POST["step"] == 0) {
         try {
@@ -469,7 +470,7 @@ function runMigrate()
 
 function setDemoData($admin_username, $admin_password, $admin_email)
 {
-    require_once __DIR__ . '/site1/config/bootstrap.php';
+    require_once $GLOBALS["site1BootstrapFile"];
 
     $config = yii\helpers\ArrayHelper::merge(
         require $GLOBALS["commonConfigFile"],
@@ -599,11 +600,13 @@ function setDemoData($admin_username, $admin_password, $admin_email)
         $permalink->site_id = $site->id;
         $permalink->save();
 
+        $date = new DateTime('now', new DateTimeZone('UTC'));
+
         $post = new common\models\Post();
         $post->type = common\models\Post::TYPE_POST;
         $post->status = common\models\Post::STATUS_ACTIVE;
         $post->permalink_id = $permalink->id;
-        $post->date = date('Y-m-d H:i:s');
+        $post->date = $date->format('Y-m-d H:i:s');
         $post->title = "Some post";
         $post->content = "This is the post content.";
         $post->site_id = $site->id;
@@ -629,7 +632,7 @@ function setDemoData($admin_username, $admin_password, $admin_email)
         $post->type = common\models\Post::TYPE_POST;
         $post->status = common\models\Post::STATUS_ACTIVE;
         $post->permalink_id = $permalink->id;
-        $post->date = date('Y-m-d H:i:s');
+        $post->date = $date->format('Y-m-d H:i:s');
         $post->title = "Some news";
         $post->content = "This is the news content.";
         $post->site_id = $site->id;

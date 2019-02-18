@@ -1,27 +1,26 @@
 <?php
 namespace site1\controllers;
 
-use Yii;
-use yii\base\InvalidParamException;
-use yii\web\HttpException;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\web\Controller;
-use yii\helpers\Url;
-use common\modules\admin\rbac\Permission;
+use common\models\LoginForm;
 use common\models\Permalink;
 use common\models\Post;
 use common\models\PostMeta;
 use common\models\PostMetaRelationship;
-use site1\models\PostVewModel;
+use common\modules\admin\rbac\Permission;
 use site1\helpers\PostHelper;
-
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
 use site1\models\PasswordResetRequestForm;
+use site1\models\PostVewModel;
 use site1\models\ResetPasswordForm;
 use site1\models\SignupForm;
+use Yii;
+use yii\base\InvalidParamException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -184,6 +183,9 @@ class SiteController extends Controller
     {
         $postVewModel = new PostVewModel();
         $postVewModel->title = $post->title;
+        if ($post->type == Post::TYPE_POST) {
+            $postVewModel->date = PostHelper::convertDbDateToPostDate($post->date);
+        }
         $postVewModel->content = $post->content;
         $postMetaList = PostMeta::find()
             ->where(['type' => PostMeta::TYPE_META, 'parent_id' => $post->id])
@@ -232,12 +234,14 @@ class SiteController extends Controller
 
     private function getPostsAndCountByPostMetaId($lang, $postMetaId, $page, $perPage)
     {
+        $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $query = (new \yii\db\Query())
             ->from('post_meta_relationships')
             ->join('INNER JOIN', 'posts', 'posts.id = post_meta_relationships.post_id')
             ->where(['post_meta_relationships.post_meta_id' => $postMetaId, 'posts.status' => Post::STATUS_ACTIVE])
+            ->andWhere(['<=', 'posts.date', $date->format('Y-m-d H:i:s')])
             ->select('post_meta_relationships.post_id')
-            ->orderBy('posts.id DESC');
+            ->orderBy('posts.date DESC');
         $rows = $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -258,6 +262,7 @@ class SiteController extends Controller
                 $permalink = Permalink::find()->where(['id' => $postItem->permalink_id])->one();
                 $postVewModel = new PostVewModel();
                 $postVewModel->title = $postItem->title;
+                $postVewModel->date = PostHelper::convertDbDateToPostDate($postItem->date);
                 $postVewModel->content = PostHelper::trimWords($postItem->content);
                 $url = array();
                 $url[] = $postRoute;

@@ -19,6 +19,7 @@ $this->title = Module::t('app', 'Editing the Post');
         <?= $form->field($model, 'title')->textInput(['id' => 'title']) ?>
         <?= $form->field($model, 'permalink_name')->textInput(['id' => 'permalink_name']) ?>
         <?= $form->field($model, 'permalink_route')->hiddenInput(['id' => 'permalink_route'])->label(false) ?>
+        <?= $form->field($model, 'date') ?>
         <?= $form->field($model, 'content')->textarea(['id' => 'content']) ?>
         <?= $form->field($model, 'status')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'site_id')->hiddenInput(['id' => 'site_id'])->label(false) ?>

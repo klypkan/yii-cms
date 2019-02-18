@@ -1,8 +1,9 @@
 <?php
 use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 $this->title = $model->title;
-if($model->description) {
+if ($model->description) {
     $this->registerMetaTag([
         'name' => 'description',
         'content' => $model->description
@@ -11,13 +12,14 @@ if($model->description) {
 ?>
 <div class="row">
     <div class="col-md-12">
-        <?=$model->content?><br>
+        <?= $model->content ?><br>
     </div>
 </div>
 <div class="row">
     <?php foreach ($postList as $postItem): ?>
         <div class="col-md-12">
-            <h2><a href="<?=Url::to($postItem->url)?>"><?= $postItem->title ?></a></h2>
+            <h2><a href="<?= Url::to($postItem->url) ?>"><?= $postItem->title ?></a></h2>
+            <p><?= $postItem->date ?></p>
         </div>
         <div class="col-md-12">
             <?= $postItem->content ?>

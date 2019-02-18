@@ -12,8 +12,11 @@ if ($model->description) {
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div>
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="row">
+    <div class="col-md-12">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <p><?= $model->date ?></p>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-12">
