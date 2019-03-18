@@ -1,5 +1,44 @@
 ﻿$(function () {
-    var site_id = $("#site_id"), postTagList = $("#post-tag-list"), maxPostTagIndex = postTagList.children("li").length;
+    var site_id = $("#site_id"), file = $("#file"), postTagList = $("#post-tag-list"), maxPostTagIndex = postTagList.children("li").length;
+
+    $("#file-upload-btn").on("click", function () {
+        file.click();
+        return false;
+    });
+
+    $("#file-remove-btn").on("click", function () {
+        var fileParent = $(this).parents(".form-group:first");
+        fileParent.find(".img-editor-image").attr("src", "");
+        fileParent.find(".img-editor-value").val("");
+        return false;
+    });
+
+    file.on("change", function (event) {
+        var formData = new FormData();
+        var directory = file.attr("data-directory");
+        if (!directory) {
+            directory = "";
+        }
+        formData.append(yii.getCsrfParam(), yii.getCsrfToken());
+        formData.append("directory", directory);
+        formData.append("upload", file[0].files[0]);
+
+        $.ajax({
+            url: "/admin/file-browser/upload-file?site_id=" + site_id.val(),
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData
+        }).done(function (url) {
+            var fileParent = file.parent();
+            fileParent.find(".img-editor-image").attr("src", url);
+            fileParent.find(".img-editor-value").val(url);
+        }).fail(function (jqXHR, textStatus) {
+            alert(jqXHR.responseText);
+        });
+
+        return false;
+    });
 
     $("#add-tags-btn").on("click", function () {
         var addTagsTextEl = $("#add-tags-text");

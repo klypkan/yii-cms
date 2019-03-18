@@ -152,6 +152,18 @@ class PostController extends \yii\web\Controller
                             }
                         }
 
+                        $postMetaThumbnailImage = PostMeta::find()->where(['type' => PostMeta::TYPE_POST_THUMBNAIL_IMAGE, 'parent_id' => $post->id])->one();
+                        if ($postMetaThumbnailImage == null) {
+                            $postMetaThumbnailImage = new PostMeta();
+                            $postMetaThumbnailImage->type = PostMeta::TYPE_POST_THUMBNAIL_IMAGE;
+                            $postMetaThumbnailImage->post_meta_order = 0;
+                            $postMetaThumbnailImage->name = PostMeta::POST_THUMBNAIL_IMAGE_URL;
+                            $postMetaThumbnailImage->parent_id = $post->id;
+                            $postMetaThumbnailImage->site_id = $model->site_id;
+                        }
+                        $postMetaThumbnailImage->value = $model->thumbnail_image;
+                        $postMetaThumbnailImage->save();
+
                         if ($postMetaSeoTitle != null || $model->seo_title) {
                             if ($postMetaSeoTitle == null) {
                                 $postMetaSeoTitle = new PostMeta();
@@ -212,6 +224,11 @@ class PostController extends \yii\web\Controller
                         }
                     }
 
+                    $postMetaThumbnailImage = PostMeta::find()->where(['type' => PostMeta::TYPE_POST_THUMBNAIL_IMAGE, 'parent_id' => $id])->one();
+                    if ($postMetaThumbnailImage != null) {
+                        $model->thumbnail_image = $postMetaThumbnailImage->value;
+                    }
+
                     $postMetaIdList = PostMetaRelationship::find()->where(['post_id' => $id])->select('post_meta_id');
                     $postMetaList = PostMeta::find()->where(['in', 'id', $postMetaIdList])->all();
                     foreach ($postMetaList as $postMetaItem) {
@@ -270,7 +287,7 @@ class PostController extends \yii\web\Controller
 
     private function convertFormDateToDbDate($formDate)
     {
-        if(!empty($formDate)) {
+        if (!empty($formDate)) {
             $format = $this->getDateTimeFormat();
             $date = \DateTime::createFromFormat($format, $formDate, new \DateTimeZone(Yii::$app->timeZone));
             $date->setTimezone(new \DateTimeZone('UTC'));

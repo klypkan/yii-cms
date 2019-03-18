@@ -15,7 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-md-12">
         <h1><?= Html::encode($this->title) ?></h1>
-        <p><?= $model->date ?></p>
+        <?php if (!empty($model->date)): ?>
+            <p><?= $model->date ?></p>
+        <?php endif; ?>
     </div>
 </div>
 <div class="row">

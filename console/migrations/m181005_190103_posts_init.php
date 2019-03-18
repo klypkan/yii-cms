@@ -20,8 +20,6 @@ class m181005_190103_posts_init extends Migration
             'date' => $this->dateTime(),
             'title' => $this->string()->notNull(),
             'content' => $this->text(),
-            'summary_content' => $this->text(),
-            'summary_image' => $this->string(),
             'permalink_id' => $this->integer(),
             'parent_id' => $this->integer(),
             'site_id' => $this->integer()->notNull(),

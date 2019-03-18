@@ -70,7 +70,7 @@ class FileBrowserController extends \yii\web\Controller
                 if (move_uploaded_file($_FILES["upload"]["tmp_name"], $target_file)) {
                     return $directory . $fileName;
                 } else {
-                    throw new \InvalidArgumentException('name');
+                    throw new \InvalidArgumentException(Module::t('error', 'The file name is not valid'));
                 }
             }
         } catch (\Exception $ex) {
@@ -157,6 +157,6 @@ class FileBrowserController extends \yii\web\Controller
     private function getExtension($fileName)
     {
         $info = new \SplFileInfo($fileName);
-        return $info->getExtension();
+        return strtolower($info->getExtension());
     }
 }

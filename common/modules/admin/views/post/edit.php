@@ -20,6 +20,16 @@ $this->title = Module::t('app', 'Editing the Post');
         <?= $form->field($model, 'permalink_name')->textInput(['id' => 'permalink_name']) ?>
         <?= $form->field($model, 'permalink_route')->hiddenInput(['id' => 'permalink_route'])->label(false) ?>
         <?= $form->field($model, 'date') ?>
+        <div class="form-group field-slide-image required">
+            <label class="control-label" for="slide-image"><?= Module::t('app', 'Thumbnail image') ?></label><br>
+            <?= $form->field($model, 'thumbnail_image')->hiddenInput(['class' => 'img-editor-value'])->label(false) ?>
+            <img src="<?=$model->thumbnail_image?>" alt="" class="img-responsive  img-editor-image" /><br>
+            <input id="file" type="file" accept=".jpg,.png,.gif" class="hidden" data-directory="/uploads/images/post_thumbnails/"/>
+            <div class="btn-group" role="group">
+                <button id="file-upload-btn" class="btn btn-default" type="button"><?= Module::t('app', 'Upload image') ?>
+                </button><button id="file-remove-btn" class="btn btn-default" type="button"><?= Module::t('app', 'Remove image') ?></button>
+            </div>
+        </div>
         <?= $form->field($model, 'content')->textarea(['id' => 'content']) ?>
         <?= $form->field($model, 'status')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'site_id')->hiddenInput(['id' => 'site_id'])->label(false) ?>

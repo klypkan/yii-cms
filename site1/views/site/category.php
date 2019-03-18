@@ -15,7 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($postList as $postItem): ?>
         <div class="col-md-12">
             <h2><a href="<?=Url::to($postItem->url)?>"><?= $postItem->title ?></a></h2>
-            <p><?= $postItem->date ?></p>
+            <?php if (!empty($postItem->date)): ?>
+                <p><?= $postItem->date ?></p>
+            <?php endif; ?>
+            <?php if (!empty($postItem->thumbnail_image)): ?>
+                <p>
+                    <img src="<?= $postItem->thumbnail_image ?>" alt="<?= $postItem->title ?>" class="img-responsive" />
+                </p>
+            <?php endif; ?>
         </div>
         <div class="col-md-12">
             <?= $postItem->content ?>

@@ -7,6 +7,7 @@ class PostVewModel extends Model
 {
     public $title;
     public $date;
+    public $thumbnail_image;
     public $content;
     public $description;
     public $url;

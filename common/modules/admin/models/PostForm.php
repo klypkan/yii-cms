@@ -12,6 +12,7 @@ class PostForm extends Model
     public $date;
     public $permalink_name;
     public $permalink_route;
+    public $thumbnail_image;
     public $content;
     public $status;
     public $site_id;
@@ -27,7 +28,7 @@ class PostForm extends Model
     {
         return [
             [['title', 'date', 'permalink_name', 'permalink_route', 'content', 'status', 'site_id'], 'required'],
-            [['categories','tags'], 'safe'],
+            [['thumbnail_image', 'categories', 'tags'], 'safe'],
             ['seo_title', 'string', 'length' => [0, 160]],
             ['seo_description', 'string', 'length' => [0, 300]],
         ];

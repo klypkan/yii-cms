@@ -12,8 +12,6 @@ use common\components\LogBehavior;
  * @property integer $type
  * @property string $title
  * @property string $content
- * @property string $summary_content
- * @property string $summary_image
  * @property integer $status
  * @property integer $permalink_id
  * @property integer $parent_id

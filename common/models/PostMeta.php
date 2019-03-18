@@ -22,9 +22,11 @@ class PostMeta extends ActiveRecord
     const TYPE_META = 0;
     const TYPE_CATEGORY = 1;
     const TYPE_TAG = 2;
+    const TYPE_POST_THUMBNAIL_IMAGE = 3;
 
     const TITLE_TAG = "title";
     const DESCRIPTION_TAG = "description";
+    const POST_THUMBNAIL_IMAGE_URL = "post_thumbnail_image_url";
 
     const SCENARIO_SEARCH = 'search';
 

@@ -187,6 +187,7 @@ class SiteController extends Controller
             $postVewModel->date = PostHelper::convertDbDateToPostDate($post->date);
         }
         $postVewModel->content = $post->content;
+
         $postMetaList = PostMeta::find()
             ->where(['type' => PostMeta::TYPE_META, 'parent_id' => $post->id])
             ->all();
@@ -264,6 +265,10 @@ class SiteController extends Controller
                 $postVewModel->title = $postItem->title;
                 $postVewModel->date = PostHelper::convertDbDateToPostDate($postItem->date);
                 $postVewModel->content = PostHelper::trimWords($postItem->content);
+                $postThumbnailImage = PostMeta::find()->where(['type' => PostMeta::TYPE_POST_THUMBNAIL_IMAGE, 'parent_id' => $postItem->id])->one();
+                if ($postThumbnailImage != null) {
+                    $postVewModel->thumbnail_image = $postThumbnailImage->value;
+                }
                 $url = array();
                 $url[] = $postRoute;
                 $url['lang'] = $lang;
