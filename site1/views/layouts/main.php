@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use site1\assets\AppAsset;
 use site1\helpers\CurrentSiteHelper;
+use site1\helpers\SiteMenuHelper;
 
 AppAsset::register($this);
 ?>
@@ -45,7 +46,7 @@ $menuItems = [
         ],
     ],
 ];
-$menuItems = site1\helpers\SiteMenuHelper::getTopMenu();
+$menuItems = SiteMenuHelper::getTopMenu();
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav'],
     'items' => $menuItems,
