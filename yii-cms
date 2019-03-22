@@ -1,0 +1,204 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Yii-CMS Application Tool
+ * yii-cms create-site --name=example_com --site=site1
+ */
+
+if (!extension_loaded('openssl')) {
+    die('The OpenSSL PHP extension is required by Yii2.');
+}
+
+$params = getParams();
+
+echo "Yii-CMS Application Tool v1.0\n\n";
+
+if (count($params) > 0) {
+    if ($params[0] == "create-site") {
+        if (!array_key_exists("name", $params)) {
+            printError("The 'name' parameter is missed.");
+            exit(3);
+        }
+        if (!array_key_exists("site", $params)) {
+            printError("The 'site' parameter is missed.");
+            exit(3);
+        }
+        createSite($params["name"], $params["site"]);
+    }
+}
+
+function createSite($newSiteName, $baseSiteName)
+{
+    $root = str_replace('\\', '/', __DIR__);
+    $dirSource = $root . "/" . $baseSiteName . "/";
+    $dirDestination = $root . "/" . $newSiteName . "/";
+    $newSiteName = preg_replace('~[^\pL\d]+~u', '_', $newSiteName);
+    if (file_exists($dirDestination)) {
+        printError("The directory '" . $dirDestination . "' exists.");
+        exit(3);
+    }
+    if (!file_exists($dirSource)) {
+        printError("The directory '" . $dirSource . "' not exists.");
+        exit(3);
+    }
+    if (!mkdir($dirDestination)) {
+        printError("Failed to create directory.");
+        exit(3);
+    }
+
+
+    copyBaseSiteToNewSiteDir($dirSource, $dirDestination, $newSiteName, $baseSiteName);
+    echo "\n  The new site '" . $newSiteName . "' has been created.\n\n";
+}
+
+function copyBaseSiteToNewSiteDir($dirSource, $dirDestination, $newSiteName, $baseSiteName)
+{
+    $dirItems = scandir($dirSource);
+    foreach ($dirItems as $item) {
+        if (!in_array($item, array(".", ".."))) {
+            if (is_dir($dirSource . $item)) {
+                $currentDirDestination = $dirDestination . $item . "/";
+                mkdir($currentDirDestination);
+                copyBaseSiteToNewSiteDir($dirSource . $item . "/", $currentDirDestination, $newSiteName, $baseSiteName);
+            } else {
+                if ($item == "install.php") {
+                    continue;
+                }
+                $fileDestination = $dirDestination . $item;
+                copy($dirSource . $item, $fileDestination);
+                $content = file_get_contents($fileDestination);
+                if (strpos($fileDestination, "config/bootstrap.php") !== false) {
+                    $content = str_replace($baseSiteName, $newSiteName, $content);
+                } elseif (strpos($fileDestination, "config/main.php") !== false) {
+                    $appId = "app-" . $newSiteName;
+                    $controllerNamespace = $newSiteName . "\controllers";
+                    $csrfParam = "_csrf-" . $newSiteName;
+                    $identityCookieName = "_identity-" . $newSiteName;
+                    $sessionName = $newSiteName;
+                    $length = 32;
+                    $bytes = openssl_random_pseudo_bytes($length);
+                    $key = strtr(substr(base64_encode($bytes), 0, $length), '+/=', '_-.');
+                    $patterns = array(
+                        '/((\')id(\')\s*=>\s*)(\'[^\']+\')/',
+                        '/((\')controllerNamespace(\')\s*=>\s*)(\'[^\']+\')/',
+                        '/((\')csrfParam(\')\s*=>\s*)(\'[^\']+\')/',
+                        '/((\')name(\')\s*=>\s*)(\'_identity[^\']+\')/',
+                        '/((\')name(\')\s*=>\s*)(\'' . $baseSiteName . '\')/',
+                        '/((\')cookieValidationKey(\')\s*=>\s*)(\'[^\']+\')/');
+                    $replacements = array(
+                        "$1'$appId'",
+                        "$1'$controllerNamespace'",
+                        "$1'$csrfParam'",
+                        "$1'$identityCookieName'",
+                        "$1'$sessionName'",
+                        "$1'$key'");
+                    $content = preg_replace($patterns, $replacements, $content);
+                } else {
+                    $content = preg_replace('/((namespace|use)\s+)(' . $baseSiteName . ')/', "$1$newSiteName", $content);
+                }
+                file_put_contents($fileDestination, $content);
+            }
+        }
+    }
+}
+
+function getParams()
+{
+    $rawParams = [];
+    if (isset($_SERVER['argv'])) {
+        $rawParams = $_SERVER['argv'];
+        array_shift($rawParams);
+    }
+
+    $params = [];
+    foreach ($rawParams as $param) {
+        if (preg_match('/^--([\w-]*\w)(=(.*))?$/', $param, $matches)) {
+            $name = $matches[1];
+            $params[$name] = isset($matches[3]) ? $matches[3] : true;
+        } else {
+            $params[] = $param;
+        }
+    }
+    return $params;
+}
+
+function setCookieValidationKey($root, $paths)
+{
+    foreach ($paths as $file) {
+        echo "   generate cookie validation key in $file\n";
+        $file = $root . '/' . $file;
+        $length = 32;
+        $bytes = openssl_random_pseudo_bytes($length);
+        $key = strtr(substr(base64_encode($bytes), 0, $length), '+/=', '_-.');
+        $content = preg_replace('/(("|\')cookieValidationKey("|\')\s*=>\s*)(""|\'\')/', "\\1'$key'", file_get_contents($file));
+        file_put_contents($file, $content);
+    }
+}
+
+/**
+ * Prints error message.
+ * @param string $message message
+ */
+function printError($message)
+{
+    echo "\n  " . formatMessage("Error. $message", ['fg-red']) . " \n";
+}
+
+/**
+ * Returns true if the stream supports colorization. ANSI colors are disabled if not supported by the stream.
+ *
+ * - windows without ansicon
+ * - not tty consoles
+ *
+ * @return boolean true if the stream supports ANSI colors, otherwise false.
+ */
+function ansiColorsSupported()
+{
+    return DIRECTORY_SEPARATOR === '\\'
+        ? getenv('ANSICON') !== false || getenv('ConEmuANSI') === 'ON'
+        : function_exists('posix_isatty') && @posix_isatty(STDOUT);
+}
+
+/**
+ * Get ANSI code of style.
+ * @param string $name style name
+ * @return integer ANSI code of style.
+ */
+function getStyleCode($name)
+{
+    $styles = [
+        'bold' => 1,
+        'fg-black' => 30,
+        'fg-red' => 31,
+        'fg-green' => 32,
+        'fg-yellow' => 33,
+        'fg-blue' => 34,
+        'fg-magenta' => 35,
+        'fg-cyan' => 36,
+        'fg-white' => 37,
+        'bg-black' => 40,
+        'bg-red' => 41,
+        'bg-green' => 42,
+        'bg-yellow' => 43,
+        'bg-blue' => 44,
+        'bg-magenta' => 45,
+        'bg-cyan' => 46,
+        'bg-white' => 47,
+    ];
+    return $styles[$name];
+}
+
+/**
+ * Formats message using styles if STDOUT supports it.
+ * @param string $message message
+ * @param string[] $styles styles
+ * @return string formatted message.
+ */
+function formatMessage($message, $styles)
+{
+    if (empty($styles) || !ansiColorsSupported()) {
+        return $message;
+    }
+
+    return sprintf("\x1b[%sm", implode(';', array_map('getStyleCode', $styles))) . $message . "\x1b[0m";
+}
