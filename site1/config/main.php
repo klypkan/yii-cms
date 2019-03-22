@@ -28,7 +28,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login
-            'name' => 'advanced-site1',
+            'name' => 'site1',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
