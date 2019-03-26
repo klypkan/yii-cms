@@ -19,7 +19,7 @@ Yii-CMS is a content management system base on [Yii 2.0](http://www.yiiframework
 
 1. Unpack the downloaded files to a Web-accessible folder.
 
-   1.1. For Shared hosting environments copy all files except **yii, yii.bat, README.md**.
+   1.1. For Shared hosting environments copy all files except **yii, yii-cms, yii.bat, README.md**.
 
    1.2. For Self-Hosted environments copy only **common, console, site1, vendor** folders. Setting **site1/web** as the document root.
 
@@ -34,6 +34,18 @@ If you are proficient in Yii 2.0, you can use Yii-CMS for your needs. If not, st
 
 # Documentation
 
+# Creating a new site
+
+Open a console terminal and run the following command:
+
+```console
+/path/to/php-bin/php /path/to/yii-application/yii-cms create-site --name=new-site-name --site=source-site-name
+```
+The example:
+
+```console
+php yii-cms create-site --name=example_com --site=site1
+```
 # Configuring the RBAC permissions
 
 The RBAC permissions are in the file **common/modules/admin/rbac/Permission.php**.<br />
