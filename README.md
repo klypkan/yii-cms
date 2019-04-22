@@ -80,7 +80,6 @@ The GridView filter configuration.
         'label' => '',//(optional)
         'operators' => [],//(optional) ['NoSet', 'Equal', 'NotEqual', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'Like']
 		'value' => null,//(optional)
-		'value' => null,//(optional)
 		'valueHandler'  => null,//(optional)
 		'readOnly' => false,//(optional)
 		'visible' => true,//(optional)
