@@ -80,7 +80,7 @@ The GridView filter configuration.
         'label' => '',//(optional)
         'operators' => [],//(optional) ['NoSet', 'Equal', 'NotEqual', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'Like']
 		'value' => null,//(optional)
-		'valueHandler'  => null,//(optional)
+		'valueHandler'  => null,//(optional) an  anonymous function the following signature: function ($filterItem, $model)
 		'readOnly' => false,//(optional)
 		'visible' => true,//(optional)
     ],
