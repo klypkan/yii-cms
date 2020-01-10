@@ -1,6 +1,87 @@
 Yii Framework 2 debug extension Change Log
 ==========================================
 
+2.1.12 November 19, 2019
+------------------------
+
+- Bug #424: Fixes missing timeline panel tooltips (My6UoT9)
+- Enh #425: Add warning message related to `traceLevel` on db panel (kjusupov)
+
+
+2.1.11 November 05, 2019
+------------------------
+
+- Bug #325: Remove staled data files i.e. files that are not in the current index file (zhukovra)
+- Bug #329: Fix logging AJAX request if URL has domain (zhukovra)
+- Bug #423: Fix duplicated toolbar when loading the iframe from a different origin (My6UoT9, samdark)
+- Enh #202: Add buttons for navigation between requests (zhukovra)
+
+
+2.1.10 October 22, 2019
+-----------------------
+
+- Enh #412: Improved layout of the Logs panel (machour, pistej)
+
+
+2.1.9 September 18, 2019
+------------------------
+
+- Bug #409: Fixed "Since previous" column's value calculation (Ir00man)
+
+
+2.1.8 August 20, 2019
+---------------------
+
+- Bug #333: Ignore normalizer in debug bar URL rules (simialbi)
+- Bug #347: Fixed "Cannot read property 'addEventListener' of null" bug of user switch (simialbi)
+
+
+2.1.7 July 30, 2019
+-------------------
+
+- Bug #401: Partial revert of #390, use var dumper on dump panel as serializer to deal with closures in SPL Objects (Sarke)
+- Bug #404: Fix insufficient data escaping in debugger views (0xbug, Artem Myshenkov, samdark)
+- Enh #40: Add "since previous" and sequential number to "logs" panel detail view (Deele, samdark)
+
+
+2.1.6 July 23, 2019
+-------------------
+
+- Enh #167: Add total request processing time and peak memory consumption on index page (pistej)
+- Enh #379: Better error message when no debug data is found (Sarke)
+- Enh #380: Enhanced browser compatibility (samdark)
+- Enh #390: Use opis/closure to serialize data (Sarke)
+- Enh #392: Add `tracePathMappings` property to module (Sarke)
+
+
+2.1.5 June 04, 2019
+-------------------
+
+- Enh #391: Dispatching event when toolbar is added to DOM, and added class that allows clicks in toolbar block (rhertogh)
+
+
+2.1.4 May 14, 2019
+------------------
+
+- Bug #376: Fixed user panel when using custom user component (iridance)
+- Bug #377: Fixed serialization of Closure error in `DumpPanel` (Sarke)
+- Bug #381: Fixed text wrapping inside tables (machour)
+- Bug #388: Fixed tooltip display in timeline (machour)
+- Enh #376: Allow setting user panel title (iridance)
+
+
+2.1.3 April 30, 2019
+--------------------
+
+- Enh #375: Made var dumper in `DumpPanel` extensible with `varDumpCallback` (Sarke)
+
+
+2.1.2 April 23, 2019
+--------------------
+
+- Bug: ⚠️ in MailPanel was not a string (samdark)
+
+
 2.1.1 March 30, 2019
 --------------------
 

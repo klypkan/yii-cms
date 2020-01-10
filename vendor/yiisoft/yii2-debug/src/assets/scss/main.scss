@@ -28,6 +28,7 @@ $h3-font-size: 1.125rem;
 @import "bs-4.3.1/nav";
 @import "bs-4.3.1/badge";
 @import "bs-4.3.1/pagination";
+@import "bs-4.3.1/tooltip";
 @import "bs-4.3.1/list-group";
 @import "bs-4.3.1/utilities";
 
@@ -153,6 +154,20 @@ ul.assets {
     word-break: break-all;
 }
 
+.word-break-keep {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+}
+
+.since-previous {
+    @extend .word-break-keep;
+
+    .button {
+        padding: 0 10px;
+        font-weight: bold;
+    }
+}
+
 .not-set {
     color: color("red");
     font-style: italic;
@@ -229,7 +244,7 @@ table {
         margin: 0.5em 0;
     }
     td {
-        white-space: pre;
+        white-space: pre-wrap;
         &.ws-normal {
             white-space: normal;
         }
