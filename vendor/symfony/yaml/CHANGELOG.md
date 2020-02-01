@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+5.0.0
+-----
+
+ * Removed support for mappings inside multi-line strings.
+ * removed support for implicit STDIN usage in the `lint:yaml` command, use `lint:yaml -` (append a dash) instead to make it explicit.
+
+4.4.0
+-----
+
+ * Added support for parsing the inline notation spanning multiple lines.
+ * Added support to dump `null` as `~` by using the `Yaml::DUMP_NULL_AS_TILDE` flag.
+ * deprecated accepting STDIN implicitly when using the `lint:yaml` command, use `lint:yaml -` (append a dash) instead to make it explicit.
+
 4.3.0
 -----
 
